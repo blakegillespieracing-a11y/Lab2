@@ -4,11 +4,35 @@
 
 #include "robot.h"
 
+static float wrapPi(float a)
+{
+    while (a > 3.14159265f)  a -= 2.0f * 3.14159265f;
+    while (a < -3.14159265f) a += 2.0f * 3.14159265f;
+    return a;
+}
+
 void Robot::UpdatePose(const Twist& twist)
 {
     /**
      * TODO: Add your FK algorithm to update currPose here.
      */
+
+     const float dS = twist.u;
+     const float dTh = twist.omega;
+
+     const float Th0 = currPose.theta;
+
+     if (fabs(dTh) < 1e-6f)
+     {
+        currPose.x += dS * cosf(Th0);
+        currPose.y += dS * sinf(Th0);
+     } else {
+        const float R = dS / dTh;
+        currPose.x += R * (sinf(Th0 + dTh) - sinf(Th0));
+        currPose.y += -R * (cosf(Th0 + dTh) - cosf(Th0));
+        currPose.theta += dTh;
+     }
+     currPose.theta = wrapPi(currPose.theta);
 
 #ifdef __NAV_DEBUG__
     TeleplotPrint("x", currPose.x);
@@ -21,17 +45,11 @@ void Robot::UpdatePose(const Twist& twist)
 /**
  * Sets a destination in the lab frame.
  */
-
-//Setting up LED
-
-void setup() {
-    pinMode(13, OUTPUT);
-}
-
 void Robot::SetDestination(const Pose& dest)
 {
-    digitalWrite(13, HIGH);        // LED ON
-
+    /**
+     * TODO: Turn on LED, as well.
+     */
     Serial.print("Setting dest to: ");
     Serial.print(dest.x);
     Serial.print(", ");
@@ -75,5 +93,4 @@ void Robot::HandleDestination(void)
     /**
      * TODO: Stop and change state. Turn off LED.
      */
-    digitalWrite(13, LOW);        // LED OFF
 }
