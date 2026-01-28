@@ -21,12 +21,16 @@ void Robot::UpdatePose(const Twist& twist)
 /**
  * Sets a destination in the lab frame.
  */
+
+//Setting up LED
+
+void setup() {
+    pinMode(13, OUTPUT);
+}
+
 void Robot::SetDestination(const Pose& dest)
 {
-    /**
-     * TODO: Turn on LED, as well.
-     */
-    
+    digitalWrite(13, HIGH);        // LED ON
 
     Serial.print("Setting dest to: ");
     Serial.print(dest.x);
@@ -71,4 +75,5 @@ void Robot::HandleDestination(void)
     /**
      * TODO: Stop and change state. Turn off LED.
      */
+    digitalWrite(13, LOW);        // LED OFF
 }
