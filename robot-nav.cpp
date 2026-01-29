@@ -22,9 +22,8 @@ void Robot::UpdatePose(const Twist& twist)
  * Sets a destination in the lab frame.
  */
 
-//Setting up LED
 
-void setup() {
+void setup() { //Setting up LED
     pinMode(13, OUTPUT);
 }
 
@@ -77,3 +76,4 @@ void Robot::HandleDestination(void)
      */
     digitalWrite(13, LOW);        // LED OFF
 }
+
