@@ -12,6 +12,10 @@ void Robot::InitializeRobot(void)
      * TODO: Set pin 13 HIGH when navigating and LOW when destination is reached.
      * Need to set as OUTPUT here.
      */
+    void setup() {
+        pinMode(13, OUTPUT);
+        digitalWrite(13, HIGH);        // LED ON
+}
 }
 
 void Robot::EnterIdleState(void)
@@ -70,3 +74,4 @@ prevB = bNow;
         }
     }
 }
+
